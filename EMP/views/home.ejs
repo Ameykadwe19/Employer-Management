@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Employer Portal - Home</title>
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+
+      * {
+        font-family: 'Noto Sans', sans-serif;
+        font-style: normal;
+        color: white;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #000;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        scrollbar-width: thin;
+        scrollbar-color: #0d6efd transparent;
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #0d6efd;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+      }
+
+      /* Text animation */
+      @keyframes typing {
+        0% {
+          width: 0;
+          text-shadow: none;
+        }
+        40%, 60% {
+          width: 100%;
+          text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.2);
+        }
+        100% {
+          width: 0;
+          text-shadow: none;
+        }
+      }
+  #para_div {
+  position: relative;
+  text-align: center;
+  padding-top: 6.25rem; /* 100px rem me */
+  height: auto;
+  min-height: 8.75rem; /* 140px rem me */
+  overflow: visible;
+  z-index: 0; /* base container z-index */
+}
+
+.typewriter {
+  font-size: 2.5rem; /* 40px rem me */
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border: none;
+  animation: typing 6s steps(50, end) infinite;
+  max-width: 100%;
+  font-style: italic;
+  position: relative; /* add this for stacking context */
+  z-index: 2; /* make main text above refl */
+}
+
+
+
+
+      @keyframes text-slide {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(20px); }
+      }
+
+      @keyframes wave {
+        0% { background-position-x: 0; }
+        100% { background-position-x: 1000px; }
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
+        50% { box-shadow: 0 0 16px rgba(59, 130, 246, 1); }
+      }
+
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.1); }
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+      }
+
+      @keyframes spin-slow {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .animate-text-slide { animation: text-slide 4s ease-in-out infinite; }
+      .fade-in-up { animation: fadeInUp 0.8s ease forwards; }
+      .glow-pulse { animation: glowPulse 2.5s ease-in-out infinite; }
+      .card-hover:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+        transition: all 0.3s ease;
+      }
+      .animate-fadeOut { animation: fadeOut 1s ease forwards; animation-delay: 3s; }
+
+      .wave-container {
+        position: relative;
+        height: 120px;
+        overflow: hidden;
+      }
+
+      .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        height: 120px;
+        background: url('data:image/svg+xml;utf8,<svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg"><path fill="%230093ff" fill-opacity="0.4" d="M0 20 Q40 0 80 20 T160 20 V40 H0 Z"/></svg>') repeat-x;
+        background-size: 160px 40px;
+        animation: wave 10s linear infinite;
+        opacity: 0.6;
+        filter: drop-shadow(0 0 6px #0093ff88);
+      }
+
+      .wave.wave-top {
+        bottom: 10px;
+        background: url('data:image/svg+xml;utf8,<svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg"><path fill="%2300bfff" fill-opacity="0.3" d="M0 20 Q40 0 80 20 T160 20 V40 H0 Z"/></svg>') repeat-x;
+        animation-duration: 15s;
+        opacity: 0.4;
+        filter: drop-shadow(0 0 4px #00bfff66);
+      }
+      
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+   <header class="bg-black border-bottom border-secondary py-3 fade-in-up" style="animation-delay: 0.2s">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <h1 class="h4 text-white fw-bold m-0">Employer Management System</h1>
+    <div class="d-flex gap-2">
+      <a href="/login" class="btn btn-primary glow-pulse" style="animation-delay: 0.4s">Login</a>
+      <a href="/register" class="btn btn-success glow-pulse" style="animation-delay: 0.6s">Register</a>
+    </div>
+  </div>
+</header>
+
+
+    
+
+    <main class="flex-grow-1 position-relative overflow-hidden">
+      <!-- Hero Section -->
+      <section class="text-center py-5 fade-in-up" style="animation-delay: 0.8s">
+        <div class="container">
+          <div id="para_div">
+            <p  class="typewriter">Welcome to the Employer Dashboard</p>
+           
+          </div>
+
+          <p class="lead text-secondary mx-auto animate-text-slide" style="max-width: 600px">
+            A smart platform to manage, update, and control your employee data.<br />
+            Fast, secure, and built for scale.
+          </p>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="py-5 bg-black fade-in-up" style="animation-delay: 1.2s">
+        <div class="container text-center">
+          <h3 class="h3 fw-bold mb-5 text-white">Visualize Your Data</h3>
+          <div class="row g-4 justify-content-center">
+            <div class="col-12 col-md-4">
+              <div class="bg-black rounded-4 p-4 shadow card-hover h-100">
+                <div class="mx-auto mb-3 rounded-circle bg-primary" style="height: 96px; width: 96px; animation: pulse 2s infinite;"></div>
+                <h4 class="fw-semibold mb-2">Secure Data Storage</h4>
+                <p class="text-secondary">Employer information is safely encrypted and stored securely.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="bg-black rounded-4 p-4 shadow card-hover h-100">
+                <div class="mx-auto mb-3 rounded-circle bg-primary" style="height: 96px; width: 96px; animation: bounce 2s infinite;"></div>
+                <h4 class="fw-semibold mb-2">Real-time Updates</h4>
+                <p class="text-secondary">Instant changes—no need to refresh manually.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="bg-black rounded-4 p-4 shadow card-hover h-100">
+                <div class="mx-auto mb-3 rounded-circle bg-primary" style="height: 96px; width: 96px; animation: spin-slow 5s linear infinite;"></div>
+                <h4 class="fw-semibold mb-2">User-Friendly Interface</h4>
+                <p class="text-secondary">Simplified dashboard for smooth workflows.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  <footer class="bg-black text-white py-3 fade-in-up" style="animation-delay: 2s;">
+  <div class="container text-center small" style="font-size: 0.8rem; color: #ccc;">
+    &copy; <%= new Date().getFullYear() %> Amey Kadwe. All rights reserved.
+  </div>
+</footer>
+
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const popup = document.getElementById("logout-message");
+      if (popup) {
+        setTimeout(() => (popup.style.display = "none"), 3000);
+      }
+    </script>
+  </body>
+</html>       

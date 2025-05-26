@@ -1,0 +1,10 @@
+# The first line of the CSV file must contain headers: Name,Age,Email,Job Role,Salary
+# Each value should be separated by a comma (,).
+
+#Like this :
+
+Name,Age,Email,Job Role,Salary
+Rahul,30,rahul@example.com,Developer,60000
+Sneha,28,sneha@example.com,Designer,55000
+Amit,35,amit@example.com,Manager,75000
+Priya,25,priya@example.com,Tester,45000

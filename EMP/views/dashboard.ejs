@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Employer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      ::-webkit-scrollbar {
+  width: 8px; /* slim width */
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* no background */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #0d6efd; /* blue color */
+  border-radius: 10px;
+  border: 2px solid transparent; /* gives space around thumb */
+  background-clip: content-box;
+}
+
+/* Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #0d6efd transparent;
+}
+      /* Modal fade & scale animation */
+      @keyframes fadeInScale {
+        0% {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes fadeOutScale {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+      }
+
+      .modal-show {
+        animation: fadeInScale 0.25s ease forwards;
+      }
+
+      .modal-hide {
+        animation: fadeOutScale 0.25s ease forwards;
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white min-h-screen flex flex-col">
+   <nav class="bg-black shadow p-4 flex justify-between items-center border-b border-gray-700 relative">
+  <div>
+  <a href="/" 
+     class="text-white font-semibold px-6 py-3 rounded-lg 
+            bg-gradient-to-r from-purple-500 via-pink-500 to-red-500
+            shadow-lg 
+            hover:brightness-110
+            transition 
+            transform hover:scale-105
+            duration-300
+            ease-in-out
+            ">
+    Homepage
+  </a>
+</div>
+
+
+  <h1 class="text-xl font-bold select-none absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    Employer Management
+  </h1>
+
+  <div class="flex items-center space-x-4">
+    <% if (user && user.name) { %>
+      <span class="text-gray-300 font-semibold select-none">Hello, <%= user.name %></span>
+    <% } %>
+    <form method="POST" action="/logout" class="inline">
+      <button type="submit" class="bg-red-600 hover:bg-red-700 transition px-4 py-2 rounded text-white font-semibold transform hover:scale-105">Logout</button>
+    </form>
+  </div>
+</nav>
+
+
+
+    <main class="flex-grow max-w-7xl mx-auto p-6">
+     <div class="flex justify-between items-center mb-6">
+ 
+
+
+  <div class="flex space-x-4">
+<a href="/download-csv" class="bg-green-600 hover:bg-green-700 px-5 py-2 rounded font-semibold text-white transform hover:scale-105 transition">
+  ⬇ Download CSV
+</a>
+
+    <form action="/employers/delete-all" method="POST" style="display:inline;">
+  <button type="submit" style="background-color: #b91c1c; color: white; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 600; cursor: pointer;">
+    Delete All Employers
+  </button>
+</form>
+
+    <!-- Add Employer Button -->
+    <button onclick="openAddForm()" class="bg-blue-600 hover:bg-blue-700 transition px-5 py-2 rounded font-semibold text-white transform hover:scale-105">
+      Add Employer
+    </button>
+
+    <!-- Upload Employers Button -->
+    <form action="/upload-employers" method="POST" enctype="multipart/form-data" id="uploadForm">
+      <label for="fileUploadBtn" class="bg-green-600 hover:bg-green-700 px-5 py-2 rounded font-semibold text-white cursor-pointer transform hover:scale-105 inline-block">
+        Upload Employers
+      </label>
+      <input id="fileUploadBtn" type="file" name="file" accept=".csv,.txt" required class="hidden" onchange="document.getElementById('uploadForm').submit()" />
+      
+    </form>
+  </div>
+  <!-- Button to open instructions modal -->
+<button id="openInstructionsBtn" 
+  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold ml-4">
+  See This Before Upload
+</button>
+
+<!-- Modal -->
+<div id="instructionsModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+  <div class="bg-gray-900 rounded-lg max-w-lg w-full p-6 text-white relative">
+    <h2 class="text-2xl font-bold mb-4">Upload Instructions</h2>
+    <p class="mb-4">
+      Please upload a CSV file with these columns: <br />
+      <strong>Name, Age, Email, Job Role, Salary</strong>.
+    </p>
+    <a href="/example-upload.csv" download
+       class="inline-block bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-semibold mb-4">
+      Download Sample CSV
+    </a>
+    <br />
+    <button id="closeInstructionsBtn" 
+      class="mt-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold">
+      Close
+    </button>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById('openInstructionsBtn');
+  const modal = document.getElementById('instructionsModal');
+  const closeBtn = document.getElementById('closeInstructionsBtn');
+
+  openBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Optional: click outside modal to close
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
+</script>
+
+
+      </div>
+
+      <!-- Table container ko scrollable banaya max height ke saath -->
+<div class="overflow-x-auto rounded-lg shadow-lg bg-blue-900 max-h-[700px] overflow-y-auto">
+  <table class="min-w-[900px] w-full divide-y divide-gray-700 table-auto">
+    <thead class="bg-blue-800 text-white sticky top-0 z-10">
+      <tr>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">ID</th>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">Name</th>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">Age</th>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">Email</th>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">Job Role</th>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">Salary (₹)</th>
+        <th class="px-8 py-3 text-left text-sm font-semibold uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+  
+    <tbody id="employerTable" style="background-color: #0d2a5a;">
+      <% if (Array.isArray(employers) && employers.length > 0) { %>
+        <% employers.forEach(function(emp, index) { %>
+          <tr data-id="<%= emp.id %>" style="cursor: pointer; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#0841a6'" onmouseout="this.style.backgroundColor='#0d2a5a'">
+            <td style="padding: 1rem; font-weight: 600;"><%= index + 1 %></td>  
+            <td style="padding: 1rem; font-weight: 600;"><%= emp.name %></td>
+            <td style="padding: 1rem;"><%= emp.age %></td>
+            <td style="padding: 1rem;"><%= emp.email %></td>
+            <td style="padding: 1rem;"><%= emp.job_role %></td>
+            <td style="padding: 1rem; font-weight: 700;">₹<%= Number(emp.salary).toLocaleString("en-IN") %></td>
+            <td style="padding: 1rem;">
+              <button onclick="openEditForm('<%= emp.id %>')" style="background-color: #facc15; color: black; padding: 0.25rem 1rem; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; margin-right: 0.5rem;">Edit</button>
+              <form action="/employers/<%= emp.id %>/delete" method="POST" style="display: inline;">
+                <button type="submit" style="background-color: #b91c1c; color: white; padding: 0.25rem 1rem; border: none; border-radius: 5px; font-weight: 600; cursor: pointer;">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 2rem; color: #aaa; font-style: italic;">
+            No employers found
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+    </main>
+
+    <!-- Modal -->
+    <div
+      id="employerFormModal"
+      class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 hidden"
+    >
+      <div
+        id="modalContent"
+        class="bg-blue-900 rounded-lg shadow-xl w-full max-w-md p-6 text-white transform scale-90 opacity-0"
+      >
+        <h2 id="formTitle" class="text-2xl font-bold mb-5">Add Employer</h2>
+        <form
+          id="employerForm"
+          method="POST"
+          action="/employers"
+          class="space-y-4"
+        >
+          <!-- Hidden input to differentiate Add / Edit -->
+          <input type="hidden" id="employerId" name="id" value="" />
+
+          <div>
+            <label for="name" class="block mb-1 font-semibold">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              class="w-full p-2 rounded bg-black border border-gray-700 focus:outline-none focus:border-blue-400 transition"
+            />
+          </div>
+
+          <div>
+            <label for="age" class="block mb-1 font-semibold">Age</label>
+            <input
+              id="age"
+              name="age"
+              type="number"
+              min="18"
+              required
+              class="w-full p-2 rounded bg-black border border-gray-700 focus:outline-none focus:border-blue-400 transition"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="block mb-1 font-semibold">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              class="w-full p-2 rounded bg-black border border-gray-700 focus:outline-none focus:border-blue-400 transition"
+            />
+          </div>
+
+          <div>
+            <label for="jobRole" class="block mb-1 font-semibold">Job Role</label>
+            <select
+              id="jobRole"
+              name="job_role"
+              required
+              class="w-full p-2 rounded bg-black border border-gray-700 focus:outline-none focus:border-blue-400 transition"
+            >
+              <option value="" disabled selected>Select Job Role</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="Frontend Developer">Frontend Developer</option>
+              <option value="Backend Developer">Backend Developer</option>
+              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="DevOps Engineer">DevOps Engineer</option>
+              <option value="Data Scientist">Data Scientist</option>
+              <option value="System Administrator">System Administrator</option>
+              <option value="Product Manager">Product Manager</option>
+              <option value="QA Engineer">QA Engineer</option>
+              <option value="UI/UX Designer">UI/UX Designer</option>
+              <option value="Mobile Developer">Mobile Developer</option>
+              <option value="Database Administrator">
+                Database Administrator
+              </option>
+              <option value="Cloud Engineer">Cloud Engineer</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="salary" class="block mb-1 font-semibold">Salary (₹)</label>
+            <input
+              id="salary"
+              name="salary"
+              type="number"
+              min="0"
+              required
+              class="w-full p-2 rounded bg-black border border-gray-700 focus:outline-none focus:border-blue-400 transition"
+            />
+          </div>
+
+          <div class="flex justify-end space-x-3">
+            <button
+              type="button"
+              onclick="closeForm()"
+              class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded font-semibold transition transform hover:scale-105"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-green-600 hover:bg-green-700 px-5 py-2 rounded font-semibold transition transform hover:scale-105"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Modal elements
+      const modals = document.getElementById("employerFormModal");
+      const modalContent = document.getElementById("modalContent");
+      const formTitle = document.getElementById("formTitle");
+      const employerForm = document.getElementById("employerForm");
+      const employerIdInput = document.getElementById("employerId");
+      const nameInput = document.getElementById("name");
+      const ageInput = document.getElementById("age");
+      const emailInput = document.getElementById("email");
+      const jobRoleSelect = document.getElementById("jobRole");
+      const salaryInput = document.getElementById("salary");
+
+      function openAddForm() {
+        formTitle.textContent = "Add Employer";
+        employerForm.action = "/employers"; // POST to add
+        employerForm.method = "POST";
+
+        employerIdInput.value = "";
+        nameInput.value = "";
+        ageInput.value = "";
+        emailInput.value = "";
+        jobRoleSelect.value = "";
+        salaryInput.value = "";
+
+        modal.classList.remove("hidden");
+        modalContent.classList.remove("modal-hide");
+        modalContent.classList.add("modal-show");
+      }
+
+      function openEditForm(id) {
+  formTitle.textContent = "Edit Employer";
+  employerForm.action = "/employers/" +  id + "/update"; // POST to update
+  employerForm.method = "POST";
+
+  // ✅ Find row using data-id
+  const row = document.querySelector(`#employerTable tr[data-id='${id}']`);
+  if (!row) return alert("Employer data not found!");
+
+  employerIdInput.value = id;
+  nameInput.value = row.children[1].textContent;
+  ageInput.value = row.children[2].textContent;
+  emailInput.value = row.children[3].textContent;
+  jobRoleSelect.value = row.children[4].textContent;
+  salaryInput.value = row.children[5].textContent
+    .replace("₹", "")
+    .replace(/,/g, "");
+
+  modal.classList.remove("hidden");
+  modalContent.classList.remove("modal-hide");
+  modalContent.classList.add("modal-show");
+}
+
+
+      function closeForm() {
+        modalContent.classList.remove("modal-show");
+        modalContent.classList.add("modal-hide");
+
+        modalContent.addEventListener(
+          "animationend",
+          () => {
+            modal.classList.add("hidden");
+          },
+          { once: true }
+        );
+      }
+
+      // Close modal on outside click
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeForm();
+      });
+    </script>
+    <!-- Existing content of home page -->
+<footer class="bg-black text-white py-3 fade-in-up" style="animation-delay: 2s;">
+  <div class="max-w-7xl mx-auto text-center" style="font-size: 0.8rem; color: #ccc;">
+    &copy; <%= new Date().getFullYear() %> Amey Kadwe. All rights reserved.
+  </div>
+</footer>
+
+
+
+</body>
+</html>
+
