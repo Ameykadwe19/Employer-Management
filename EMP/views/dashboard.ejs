@@ -362,7 +362,7 @@ body {
   employerForm.action = "/employers/" +  id + "/update"; // POST to update
   employerForm.method = "POST";
 
-  // ✅ Find row using data-id
+  // Find row using data-id
   const row = document.querySelector(`#employerTable tr[data-id='${id}']`);
   if (!row) return alert("Employer data not found!");
 
