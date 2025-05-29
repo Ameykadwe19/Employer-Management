@@ -148,21 +148,21 @@ body {
 
 <script>
   const openBtn = document.getElementById('openInstructionsBtn');
-  const modal = document.getElementById('instructionsModal');
+  const modals = document.getElementById('instructionsModal');
   const closeBtn = document.getElementById('closeInstructionsBtn');
 
   openBtn.addEventListener('click', () => {
-    modal.classList.remove('hidden');
+    modals.classList.remove('hidden');
   });
 
   closeBtn.addEventListener('click', () => {
-    modal.classList.add('hidden');
+    modals.classList.add('hidden');
   });
 
   // Optional: click outside modal to close
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.add('hidden');
+  modals.addEventListener('click', (e) => {
+    if (e.target === modals) {
+      modals.classList.add('hidden');
     }
   });
 </script>
@@ -329,7 +329,7 @@ body {
 
     <script>
       // Modal elements
-      const modals = document.getElementById("employerFormModal");
+      const modal = document.getElementById("employerFormModal");
       const modalContent = document.getElementById("modalContent");
       const formTitle = document.getElementById("formTitle");
       const employerForm = document.getElementById("employerForm");
