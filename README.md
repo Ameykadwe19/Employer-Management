@@ -124,11 +124,29 @@ This query fetches all employers related to a specific user, along with user det
 ---
 
 ## 📸 Screenshots
+- Hompage
+![Screenshot (19)](https://github.com/user-attachments/assets/9c2529a0-a44c-4ce1-a769-9c2a561d8827)
 
-<!-- Optional: add screenshots here -->
+- Register page
+  ![Screenshot (20)](https://github.com/user-attachments/assets/88d29dbb-a0c5-4d30-9058-1591a7154bfb)
+
 - Login Page
+  ![Screenshot (21)](https://github.com/user-attachments/assets/b319c248-42fd-49e8-a917-94b0fe540c5d)
+
 - Dashboard
-- Upload Section
+  ![Screenshot (22)](https://github.com/user-attachments/assets/cef21972-eaaa-4dc4-879f-4b61d3769121)
+
+- Add employer
+  ![Screenshot (23)](https://github.com/user-attachments/assets/0e28a149-5f1b-41d3-8f56-7be796f2329f)
+
+- Edit employer
+  ![Screenshot (24)](https://github.com/user-attachments/assets/6064f819-ccc9-4910-8cd4-eaff8947bad9)
+
+- Instructions
+  ![Screenshot (25)](https://github.com/user-attachments/assets/41dd3559-021d-432c-9d6b-2e3fffed9f63)
+
+
+  
 
 ---
 
